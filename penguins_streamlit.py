@@ -11,32 +11,19 @@ from sklearn.model_selection import train_test_split
 # Presentation
 
 st.title('Penguin Classifier')
-st.write("This app uses 6 inputs to predict the species of penguin using a model built on the Palmer's Penguin's dataset. Use the form below to get started!")
+st.write("This app uses 6 inputs to predict the species of a penguin using a model built on the Palmer's Penguin's dataset. Use the form below to get started!")
 
 # Accepting upload file
-penguin_file = st.file_uploader('Upload your own penguin data')
+# penguin_file = st.file_uploader('Upload your own penguin data')
 
-# Showing the sample random forest model while no upload occurs
-if penguin_file is None:
-    penguin_df = pd.read_csv('penguins.csv')
-    rf_pickle = open('random_forest_penguin.pickle', 'rb')
-    map_pickle = open('output_penguin.pickle', 'rb')
-    rfc = pickle.load(rf_pickle)
-    unique_penguin_mapping = pickle.load(map_pickle)
-    rf_pickle.close()
-    map_pickle.close()
-else: # User has provided a file
-    penguin_df = pd.read_csv(penguin_file)
-    penguin_df = penguin_df.dropna()
-    output = penguin_df['species']
-    features = penguin_df[['island', 'bill_length_mm', 'bill_depth_mm', 'flipper_lenght_mm', 'body_mass_g', 'sex']]
-    features = pd.get_dummies(features)
-    x_train, x_test, y_train, y_test = train_test_split(features, output, test_size=.8)
-    rfc = RandomForestClassifier(random_state=15)
-    rfc.fit(x_train, y_train)
-    y_pred = rfc.predict(test)
-    score = round(accuracy_score(y_pred, y_test), 2)
-    st.write('We trained a Random Forest model on these data, it has a score of {}! Use the model inputs below to try out the model.'.format(score))
+# Showing the sample random forest model
+penguin_df = pd.read_csv('penguins.csv')
+rf_pickle = open('random_forest_penguin.pickle', 'rb')
+map_pickle = open('output_penguin.pickle', 'rb')
+rfc = pickle.load(rf_pickle)
+unique_penguin_mapping = pickle.load(map_pickle)
+rf_pickle.close()
+map_pickle.close()
 
 # Getting the inputs
 with st.form('user_inputs'):
